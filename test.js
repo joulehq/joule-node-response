@@ -1,4 +1,4 @@
-Response = require('./index').Response;
+Response = require('./index');
 
 var contextStub = {
   succeed: function(data) {
