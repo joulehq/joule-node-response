@@ -1,4 +1,4 @@
-exports.Response = function() {
+module.exports = function() {
   var _container = {
     code: null,
     message: null,
