@@ -1,4 +1,4 @@
-Response = require('./index');
+var response = require('./index');
 
 var contextStub = {
   succeed: function(data) {
@@ -20,7 +20,6 @@ var data = {
   }
 };
 
-var response = new Response();
 response.success200(contextStub, data);
 response.success201(contextStub, data);
 response.success204(contextStub, data);
