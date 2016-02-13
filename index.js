@@ -16,6 +16,10 @@ var error = function(context, result) {
 
 module.exports = {
   // success codes
+	successRaw : function(context, result) {
+		context.succeed(result);
+	},
+
   success200 : function(context, result) {
     _container.code = 200;
     _container.message = "200: Ok";

@@ -20,6 +20,7 @@ var data = {
   }
 };
 
+response.successRaw(contextStub, "<xml>This should be XML</xml>");
 response.success200(contextStub, data);
 response.success201(contextStub, data);
 response.success204(contextStub, data);
