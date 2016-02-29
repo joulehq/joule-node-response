@@ -16,12 +16,13 @@ var data = {
 
 var response1 = new Response();
 response1.setContext(contextStub);
+response1.setContentType('application/xml');
 response1.send("<xml>This should be XML</xml>");
 
 var response2 = new Response();
 response2.setContext(contextStub);
 response2.setHttpStatusCode(201);
-response2.setHeader('Content-Type: application/xml');
+response2.setContentType('application/xml');
 response2.send("<xml>This should be XML</xml>");
 
 var response3 = new Response();

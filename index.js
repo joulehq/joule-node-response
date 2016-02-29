@@ -1,18 +1,28 @@
 
 var Response = function() {
   var _context
+      , _contentType
+      , _defaultContentType = 'application/json'
+      , _defaultHttpStatusCode = 200
       , _headers = []
       , _httpStatusCode;
+
+  this.setContentType = function(type) {
+    this.setHeader('Content-Type', type);
+    _contentType = type;
+  };
 
   this.setContext = function(context) {
     _context = context;    
   };
 
-  this.setHeader = function(string) {
-    _headers.push(string);
+  this.setHeader = function(name, value) {
+    var _h = {};
+    _h[name] = value;
+    _headers.push(_h);
   };
 
-	this.setHttpStatusCode = function(code) {
+  this.setHttpStatusCode = function(code) {
     var headerString
         , reason = '';
 
@@ -47,21 +57,23 @@ var Response = function() {
         break;
     }
 
-    headerString = 'Status: ' + code + ' ' + reason;
-    this.setHeader(headerString);
+    this.setHeader('Status', code + ' ' + reason);
     _httpStatusCode = code;
   },
 
   // success codes
-	this.send = function(data) {
+  this.send = function(data) {
     result = {};
     if(typeof(_httpStatusCode) === 'undefined') {
-      this.setHttpStatusCode(200);
+      this.setHttpStatusCode(_defaultHttpStatusCode);
+    }
+    if(typeof(_contentType) === 'undefined') {
+      this.setContentType(_defaultContentType);
     }
     result['headers'] = _headers;
     result['data'] = data;
-		_context.succeed(result);
-	}
+    _context.succeed(result);
+  }
 };
 
 module.exports = Response;
