@@ -1,65 +1,67 @@
-var _container = {
-	code: null,
-	message: null,
-	result: null
-};
 
-var success = function(context, result) {
-	_container.result = result;
-	context.succeed(JSON.stringify(_container));
-};
+var Response = function() {
+  var _context
+      , _headers = []
+      , _httpStatusCode;
 
-var error = function(context, result) {
-	_container.result = result;
-	context.fail(JSON.stringify(_container));
-};
+  this.setContext = function(context) {
+    _context = context;    
+  };
 
-module.exports = {
+  this.setHeader = function(string) {
+    _headers.push(string);
+  };
+
+	this.setHttpStatusCode = function(code) {
+    var headerString
+        , reason = '';
+
+    // https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html
+    switch(code) {
+      case 200:
+        reason = 'OK';
+        break;
+      case 201:
+        reason = 'Created';
+        break;
+      case 202:
+        reason = 'Accepted';
+        break;
+      case 400:
+        reason = 'Bad Request';
+        break;
+      case 401:
+        reason = 'Unauthorized';
+        break;
+      case 403:
+        reason = 'Forbidden';
+        break;
+      case 404:
+        reason = 'Not Found';
+        break;
+      case 409:
+        reason = 'Conflict';
+        break;
+      default:
+        reason = 'Unknown';
+        break;
+    }
+
+    headerString = 'Status: ' + code + ' ' + reason;
+    this.setHeader(headerString);
+    _httpStatusCode = code;
+  },
+
   // success codes
-	successRaw : function(context, result) {
-		context.succeed(result);
-	},
-
-  success200 : function(context, result) {
-    _container.code = 200;
-    _container.message = "200: Ok";
-    success(context, result);
-  },
-
-  success201 : function(context, result) {
-    _container.code = 201;
-    _container.message = "201: Created";
-    success(context, result);
-  },
-
-  success204 : function(context, result) {
-    _container.code = 204;
-    _container.message = "204: No Content";
-    success(context, result);
-  },
-
-  // error codes
-  error400 : function(context, result) {
-    _container.code = 400;
-    _container.message = "400: Bad Request";
-    error(context, result);
-  },
-
-  error401 : function(context, result) {
-    _container.code = 401;
-    _container.message = "401: Unauthorized";
-    error(context, result);
-  },
-
-  error404 : function(context, result) {
-    _container.code = 404;
-    _container.message = "404: Not Found";
-    error(context, result);
-  },
-
-  error500 : function(context, result) {
-    _container.code = 500;
-    _container.message = "500: Internal Server Error";
-    error(context, result);
-  }
+	this.send = function(data) {
+    result = {};
+    if(typeof(_httpStatusCode) === 'undefined') {
+      this.setHttpStatusCode(200);
+    }
+    result['headers'] = _headers;
+    result['data'] = data;
+		_context.succeed(result);
+	}
 };
+
+module.exports = Response;

@@ -1,13 +1,7 @@
-var response = require('./index');
+var Response = require('./index');
 
 var contextStub = {
   succeed: function(data) {
-    console.log('--- SUCCESS ---');
-    console.log(data);
-  },
-
-  fail: function(data) {
-    console.log('--- FAIL ---');
     console.log(data);
   }
 };
@@ -20,16 +14,17 @@ var data = {
   }
 };
 
-response.successRaw(contextStub, "<xml>This should be XML</xml>");
-response.success200(contextStub, data);
-response.success201(contextStub, data);
-response.success204(contextStub, data);
+var response1 = new Response();
+response1.setContext(contextStub);
+response1.send("<xml>This should be XML</xml>");
 
-data = {
-  error: "user not found"
-};
+var response2 = new Response();
+response2.setContext(contextStub);
+response2.setHttpStatusCode(201);
+response2.setHeader('Content-Type: application/xml');
+response2.send("<xml>This should be XML</xml>");
 
-response.error400(contextStub, data);
-response.error401(contextStub, data);
-response.error404(contextStub, data);
-response.error500(contextStub, data);
+var response3 = new Response();
+response3.setContext(contextStub);
+response3.setHttpStatusCode(400);
+response3.send({name: "value"});
