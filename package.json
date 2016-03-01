@@ -1,6 +1,6 @@
 {
   "name": "joule-node-response",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Library to help joules format responses.",
   "main": "index.js",
   "scripts": {

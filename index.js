@@ -4,7 +4,7 @@ var Response = function() {
       , _contentType
       , _defaultContentType = 'application/json'
       , _defaultHttpStatusCode = 200
-      , _headers = []
+      , _headers = {}
       , _httpStatusCode;
 
   this.setContentType = function(type) {
@@ -17,9 +17,7 @@ var Response = function() {
   };
 
   this.setHeader = function(name, value) {
-    var _h = {};
-    _h[name] = value;
-    _headers.push(_h);
+    _headers[name] = value;
   };
 
   this.setHttpStatusCode = function(code) {
